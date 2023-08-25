@@ -2,10 +2,13 @@ import axios from 'axios';
 import fs from 'fs-extra';
 import path from 'path';
 import ffmpeg from 'fluent-ffmpeg';
+import ffmpegInstaller from 'ffmpeg-static';
 
 import { decryptFile } from './decrypt.js';
 import { fetchMovie } from './movie.js';
 import { OUTPUT_FOLDERS, movies } from '../config.js';
+
+ffmpeg.setFfmpegPath(ffmpegInstaller);
 
 const downloadSubtitle = async ({ subtitleUrl, subtitlePath }) => {
   const response = await axios.get(subtitleUrl, {
@@ -27,15 +30,13 @@ const downloadVideo = ({ name, m3u8Path, outputPath }) => {
   console.log(`\n🚀🚀 ~ Start downloading ${name}, keep calm and take a coffee... ☕️`);
 
   ffmpeg(m3u8Path)
-    .inputOptions('-protocol_whitelist https,file,tls,tcp,crypto')
+    .inputOptions('-protocol_whitelist file,http,https,tcp,tls,crypto')
     .outputOptions('-c copy')
     .on('error', (err) => {
       console.error(`Error: ${err.message}`);
-      reject(err);
     })
     .on('end', () => {
       console.log(`\n🚀🚀🚀 ~ ${name} Download video completed!`);
-      resolve();
     })
     .save(outputPath);
 };

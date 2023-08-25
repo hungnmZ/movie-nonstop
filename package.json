@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "axios": "^1.4.0",
+    "ffmpeg-static": "^5.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^11.1.1"
   },
@@ -11,7 +12,6 @@
   "name": "movie-nonstop",
   "version": "1.0.0",
   "main": "config.js",
-  "devDependencies": {},
   "keywords": [],
   "author": "hungnmZ",
   "license": "ISC",
