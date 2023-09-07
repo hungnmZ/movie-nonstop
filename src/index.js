@@ -26,6 +26,11 @@ const downloadM3U8 = async ({ url, m3u8Path }) => {
   await fs.writeFile(m3u8Path, response.data);
 };
 
+const deleteM3U8 = async ({ m3u8Path, name }) => {
+  await fs.remove(m3u8Path);
+  console.log(`\n🗑️ ${name} ~ M3U8 deletion completed!`);
+};
+
 const downloadVideo = ({ name, m3u8Path, outputPath }) => {
   console.log(`\n🚀🚀 ~ Start downloading ${name}, keep calm and take a coffee... ☕️`);
 
@@ -37,6 +42,8 @@ const downloadVideo = ({ name, m3u8Path, outputPath }) => {
     })
     .on('end', () => {
       console.log(`\n🚀🚀🚀 ~ ${name} Download video completed!`);
+
+      deleteM3U8({ m3u8Path, name });
     })
     .save(outputPath);
 };
