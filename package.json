@@ -1,19 +1,42 @@
 {
-  "dependencies": {
-    "axios": "^1.4.0",
-    "ffmpeg-static": "^5.2.0",
-    "fluent-ffmpeg": "^2.1.2",
-    "fs-extra": "^11.1.1"
-  },
+  "name": "movie-nonstop-v2",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "node src/index.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "eslint": "npx eslint ."
   },
-  "type": "module",
-  "name": "movie-nonstop",
-  "version": "1.0.0",
-  "main": "config.js",
-  "keywords": [],
-  "author": "hungnmZ",
-  "license": "ISC",
-  "description": "No more lag! Just pop the popcorn, sit back, and enjoy your high-quality movies 🚀"
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "dayjs": "^1.11.10",
+    "framer-motion": "^10.16.5",
+    "lucide-react": "^0.292.0",
+    "next": "14.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.0.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "14.0.2",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.7",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2"
+  }
 }
