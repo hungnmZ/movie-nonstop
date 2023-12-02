@@ -1,2 +1,2 @@
-export * from './CardSliderContainer';
-export { default } from './CardSliderContainer';
+export * from './CardSlider';
+export { default } from './CardSlider';
