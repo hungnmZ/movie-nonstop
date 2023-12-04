@@ -2,6 +2,8 @@ import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import DarkModeToggle from '../DarkModeToggle';
+
 const LINKS = [
   {
     label: 'Home',
@@ -51,7 +53,9 @@ const Header = () => {
             ))}
           </nav>
         </div>
-        <div className='flex'></div>
+        <div className='flex flex-1 justify-end'>
+          <DarkModeToggle />
+        </div>
       </div>
     </header>
   );

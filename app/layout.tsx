@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 
 import Header from '@/components/Header';
+import ThemeProvider from '@/components/ThemeProvider';
 import { cn } from '@/lib/utils';
 
 import './globals.css';
@@ -18,15 +19,22 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
         )}
       >
-        <Header />
-        {children}
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
