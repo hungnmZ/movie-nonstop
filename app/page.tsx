@@ -3,6 +3,8 @@ import * as React from 'react';
 import CardSlider from '@/components/CardSlider/CardSlider';
 import { getHomeTitles } from '@/data/title';
 
+export const revalidate = 600;
+
 const Home = async () => {
   const data = await getHomeTitles();
 
@@ -19,7 +21,6 @@ const Home = async () => {
       <div className='-mb-5'>
         <CardSlider header='New Releases TV Shows' titles={data.showTitles?.nodes} />
       </div>
-      <div style={{ height: '100vh' }}></div>
     </main>
   );
 };
