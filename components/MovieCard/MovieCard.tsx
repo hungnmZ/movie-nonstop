@@ -47,7 +47,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
       }}
     >
       <motion.div
-        className='cardContent absolute inset-0 flex flex-col overflow-hidden rounded-lg'
+        className='cardContent absolute inset-0 flex flex-col overflow-hidden rounded-lg shadow-md shadow-foreground/20 dark:shadow-background/20'
         initial={false}
         transition={SPRING}
         animate={getCardVariant()}
