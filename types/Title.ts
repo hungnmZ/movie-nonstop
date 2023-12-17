@@ -11,7 +11,6 @@ export interface BasicTitle {
       nameEn: string;
     },
   ];
-  translation: string;
   childrenCount: number;
   movieInfo: {
     duration: number;

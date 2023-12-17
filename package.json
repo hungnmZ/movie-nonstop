@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo -p 3006",
+    "debug": "next dev -p 3006",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "eslint": "npx eslint ."
   },
   "dependencies": {
+    "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

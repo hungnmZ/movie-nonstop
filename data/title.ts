@@ -1,6 +1,7 @@
 import { sendGraphQLReq } from '@/helpers/fetch';
 import { HomeTitles } from '@/types/HomeTitles';
 import { BasicTitle } from '@/types/Title';
+import { TopTitles } from '@/types/TopTitles';
 import { getTmdbBackdropUrl, getTmdbPosterUrl } from '@/utils/image';
 
 export const getTitleWatch = async (id: string) => {
@@ -19,11 +20,84 @@ export const getTitleWatch = async (id: string) => {
   return data;
 };
 
-export const getTopTitles = async (id: string) => {
+export const getTopTitles = async () => {
   // todo
-  const query = /* GraphQL */ ``;
+  const query = /* GraphQL */ `
+    query TopTitles {
+      topTitles {
+        titleId
+        range
+        position
+        title {
+          ...TitleBasics
+          parent {
+            ...TitleBasics
+            parent {
+              ...TitleBasics
+            }
+          }
+        }
+      }
+    }
 
-  return sendGraphQLReq(query, { id });
+    fragment TitleBasics on Title {
+      id
+      nameEn
+      type
+      tmdbPoster
+      tmdbBackdrop
+      publishDate
+      imdbRating
+      genres {
+        nameEn
+      }
+      childrenCount
+      movieInfo {
+        duration
+      }
+    }
+  `;
+
+  const response = await sendGraphQLReq(query);
+  const { data } = (await response.json()) as TopTitles;
+
+  const topCategories = data.topTitles.reduce(
+    (pre, { range, title }) => {
+      let newTitle = title.type !== 'movie' ? title.parent.parent : title;
+      newTitle = {
+        ...newTitle,
+        tmdbPoster: getTmdbPosterUrl(newTitle.tmdbPoster),
+        tmdbBackdrop: getTmdbBackdropUrl(newTitle.tmdbBackdrop),
+      };
+
+      switch (range) {
+        case 'day':
+          !pre.day.some((item) => item.id === newTitle.id) && pre.day.push(newTitle);
+          break;
+        case 'week':
+          !pre.week.some((item) => item.id === newTitle.id) && pre.week.push(newTitle);
+          break;
+        case 'month':
+          !pre.month.some((item) => item.id === newTitle.id) && pre.month.push(newTitle);
+          break;
+        default:
+          break;
+      }
+
+      return pre;
+    },
+    {
+      day: [],
+      week: [],
+      month: [],
+    } as {
+      day: BasicTitle[];
+      week: BasicTitle[];
+      month: BasicTitle[];
+    },
+  );
+
+  return topCategories;
 };
 
 export const getHomeTitles = async () => {
@@ -55,7 +129,6 @@ export const getHomeTitles = async () => {
       genres {
         nameEn
       }
-      translation
       childrenCount
       movieInfo {
         duration
