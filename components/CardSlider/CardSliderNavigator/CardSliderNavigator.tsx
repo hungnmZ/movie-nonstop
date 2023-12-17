@@ -56,7 +56,7 @@ const CardSliderNavigator: React.FC<CardSliderNavigatorProps> = ({
       {isHoverSlider && (
         <span
           className='handlePrevious absolute -left-5 top-0 z-20 flex h-full w-5 items-center justify-center rounded-r-lg bg-background/30 hover:bg-background/60  md:-left-10 md:w-10'
-          onMouseOver={() => setIsHoverPrev(true)}
+          onMouseEnter={() => setIsHoverPrev(true)}
           onMouseLeave={() => setIsHoverPrev(false)}
           onClick={() => handleNavigation('left')}
           role='button'
@@ -75,7 +75,7 @@ const CardSliderNavigator: React.FC<CardSliderNavigatorProps> = ({
       {isHoverSlider && (
         <span
           className='handleNext absolute -right-5 top-0 z-20 flex h-full w-5 items-center justify-center rounded-l-lg bg-background/30 hover:bg-background/60 md:-right-10 md:w-10'
-          onMouseOver={() => setIsHoverNext(true)}
+          onMouseEnter={() => setIsHoverNext(true)}
           onMouseLeave={() => setIsHoverNext(false)}
           onClick={() => handleNavigation('right')}
           role='button'

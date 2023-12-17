@@ -45,7 +45,7 @@ const CardSlider: React.FC<CardSliderProps> = ({ header, titles }) => {
   return (
     <div
       className='sliderWrapper overflow-visible whitespace-nowrap p-5 md:p-10'
-      onMouseOver={() => setIsHoverSlider(true)}
+      onMouseEnter={() => setIsHoverSlider(true)}
       onMouseLeave={() => setIsHoverSlider(false)}
     >
       <div className='mb-2 text-xl font-extrabold xl:text-2xl'>{header}</div>
