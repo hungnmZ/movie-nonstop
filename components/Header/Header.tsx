@@ -15,7 +15,7 @@ const LINKS = [
   },
   {
     label: 'Movies',
-    href: '/movies',
+    href: '/movie',
   },
   {
     label: 'Popular',
