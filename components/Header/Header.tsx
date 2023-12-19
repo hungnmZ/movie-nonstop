@@ -10,16 +10,16 @@ const LINKS = [
     href: '/',
   },
   {
-    label: 'Popular',
-    href: '/popular',
-  },
-  {
     label: 'TV Shows',
-    href: '/show',
+    href: '/tv-show',
   },
   {
     label: 'Movies',
     href: '/movies',
+  },
+  {
+    label: 'Popular',
+    href: '/popular',
   },
   {
     label: 'My List',
@@ -34,10 +34,10 @@ const Header = () => {
         <div className='mr-4 flex'>
           <Link href='/'>
             <Image
-              className='mr-6 cursor-pointer'
+              className='mr-6 h-8 w-auto cursor-pointer'
               src='/images/logo-full.png'
-              width={100}
-              height='30'
+              width={264}
+              height={85}
               alt='logo'
             />
           </Link>

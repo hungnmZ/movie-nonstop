@@ -6,7 +6,7 @@ import { getHomeTitles } from '@/data/title';
 export const revalidate = 600;
 
 const Home = async () => {
-  const data = await getHomeTitles();
+  const data = await getHomeTitles(24);
 
   return (
     <main>

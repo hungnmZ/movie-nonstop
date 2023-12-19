@@ -30,7 +30,7 @@ const CardList: React.FC<CardListProps> = ({ data }) => {
 
   return (
     <div className='m-5 grid grid-cols-3 gap-2 gap-y-20 overflow-visible whitespace-nowrap md:m-10 lg:grid-cols-4 xl:grid-cols-6'>
-      {data.slice(0, 24).map((title: BasicTitle, index: number) => (
+      {data.map((title: BasicTitle, index: number) => (
         <div key={title.id} className='aspect-video w-full'>
           <MovieCard
             data={title}

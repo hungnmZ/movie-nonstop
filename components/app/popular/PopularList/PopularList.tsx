@@ -45,7 +45,7 @@ const PopularList: React.FC<PopularListProps> = ({ data }) => {
           </Select>
         </div>
       </div>
-      <CardList data={titles} />
+      <CardList data={titles.slice(0, 24)} />
     </main>
   );
 };
