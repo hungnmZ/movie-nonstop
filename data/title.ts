@@ -1,8 +1,30 @@
+'use server';
+
 import { sendGraphQLReq } from '@/helpers/fetch';
 import { HomeTitles } from '@/types/HomeTitles';
 import { BasicTitle } from '@/types/Title';
+import { Titles } from '@/types/Titles';
 import { TopTitles } from '@/types/TopTitles';
 import { getTmdbBackdropUrl, getTmdbPosterUrl } from '@/utils/image';
+
+const TITLES_BASIC_FRAGMENT = /* GraphQL */ `
+  fragment TitleBasics on Title {
+    id
+    nameEn
+    type
+    tmdbPoster
+    tmdbBackdrop
+    publishDate
+    imdbRating
+    genres {
+      nameEn
+    }
+    childrenCount
+    movieInfo {
+      duration
+    }
+  }
+`;
 
 export const getTitleWatch = async (id: string) => {
   const query = /* GraphQL */ `
@@ -39,23 +61,7 @@ export const getTopTitles = async () => {
         }
       }
     }
-
-    fragment TitleBasics on Title {
-      id
-      nameEn
-      type
-      tmdbPoster
-      tmdbBackdrop
-      publishDate
-      imdbRating
-      genres {
-        nameEn
-      }
-      childrenCount
-      movieInfo {
-        duration
-      }
-    }
+    ${TITLES_BASIC_FRAGMENT}
   `;
 
   const response = await sendGraphQLReq(query);
@@ -100,40 +106,26 @@ export const getTopTitles = async () => {
   return topCategories;
 };
 
-export const getHomeTitles = async () => {
+export const getHomeTitles = async (limit = 12) => {
   const query = /* GraphQL */ `
     query HomeTitles {
-      recommendedTitles: titles(first: 12, sort: "recommended") {
+      recommendedTitles: titles(first: ${limit}, sort: "recommended") {
         nodes {
           ...TitleBasics
         }
       }
-      movieTitles: titles(first: 12, sort: "updated", types: ["movie"], watchable: true) {
+      movieTitles: titles(first: ${limit}, sort: "updated", types: ["movie"], watchable: true) {
         nodes {
           ...TitleBasics
         }
       }
-      showTitles: titles(first: 12, sort: "updated", types: ["show"], watchable: true) {
+      showTitles: titles(first: ${limit}, sort: "updated", types: ["show"], watchable: true) {
         nodes {
           ...TitleBasics
         }
       }
     }
-    fragment TitleBasics on Title {
-      id
-      nameEn
-      tmdbPoster
-      tmdbBackdrop
-      publishDate
-      imdbRating
-      genres {
-        nameEn
-      }
-      childrenCount
-      movieInfo {
-        duration
-      }
-    }
+    ${TITLES_BASIC_FRAGMENT}
   `;
 
   const response = await sendGraphQLReq(query);
@@ -153,4 +145,64 @@ export const getHomeTitles = async () => {
   }
 
   return data;
+};
+
+export const getTitles = async ({
+  type,
+  genre,
+  page,
+  limit = 24,
+}: {
+  type: string;
+  genre?: string;
+  page?: number;
+  limit?: number;
+}) => {
+  // todo
+  const query = /* GraphQL */ `
+    query Titles(
+      $first: Int!
+      $after: String
+      $page: String
+      $genre: String
+      $watchable: Boolean
+      $types: [String!]
+    ) {
+      titles(
+        first: $first
+        after: $after
+        page: $page
+        genre: $genre
+        watchable: $watchable
+        types: $types
+      ) {
+        nodes {
+          ...TitleBasics
+        }
+        hasNextPage
+        endCursor
+        total
+      }
+    }
+    ${TITLES_BASIC_FRAGMENT}
+  `;
+
+  const variables = {
+    watchable: true,
+    types: [type],
+    first: limit,
+    ...(page && { page: page.toString() }),
+    ...(genre && { genre }),
+  };
+  const response = await sendGraphQLReq(query, variables);
+  const { data } = (await response.json()) as Titles;
+
+  data.titles.nodes = data.titles.nodes.map(({ tmdbBackdrop, ...rest }: BasicTitle) => ({
+    tmdbBackdrop: tmdbBackdrop
+      ? getTmdbBackdropUrl(tmdbBackdrop)
+      : getTmdbPosterUrl(rest.tmdbPoster),
+    ...rest,
+  }));
+
+  return data.titles;
 };
