@@ -4,7 +4,7 @@ import { range } from '@/utils';
 export default function Loading() {
   return (
     <main>
-      <div className='-mb-5 overflow-visible whitespace-nowrap p-5 md:p-10'>
+      <div className='-mb-5 overflow-hidden whitespace-nowrap p-5 md:p-10'>
         <div className='mb-2 text-xl font-extrabold xl:text-2xl'>Trending Now</div>
         {range(0, 12).map((index) => (
           <div
@@ -16,7 +16,7 @@ export default function Loading() {
         ))}
       </div>
 
-      <div className='-mb-5 overflow-visible whitespace-nowrap p-5 md:p-10'>
+      <div className='-mb-5 overflow-hidden whitespace-nowrap p-5 md:p-10'>
         <div className='mb-2 text-xl font-extrabold xl:text-2xl'>New Releases Movies</div>
         {range(0, 12).map((index) => (
           <div
@@ -28,7 +28,7 @@ export default function Loading() {
         ))}
       </div>
 
-      <div className='-mb-5 overflow-visible whitespace-nowrap p-5 md:p-10'>
+      <div className='-mb-5 overflow-hidden whitespace-nowrap p-5 md:p-10'>
         <div className='mb-2 text-xl font-extrabold xl:text-2xl'>
           New Releases TV Shows
         </div>
