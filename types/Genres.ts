@@ -8,3 +8,5 @@ export interface Genres {
     ];
   };
 }
+
+export type GenresItem = Genres['data']['genres'];

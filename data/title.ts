@@ -1,9 +1,10 @@
 'use server';
 
 import { sendGraphQLReq } from '@/helpers/fetch';
+import { ErrorResponse } from '@/types/ErrorResponse';
 import { HomeTitles } from '@/types/HomeTitles';
 import { BasicTitle } from '@/types/Title';
-import { Titles } from '@/types/Titles';
+import { GetTitlesParams, Titles } from '@/types/Titles';
 import { TopTitles } from '@/types/TopTitles';
 import { getTmdbBackdropUrl, getTmdbPosterUrl } from '@/utils/image';
 
@@ -147,17 +148,7 @@ export const getHomeTitles = async (limit = 12) => {
   return data;
 };
 
-export const getTitles = async ({
-  type,
-  genre,
-  page,
-  limit = 24,
-}: {
-  type: string;
-  genre?: string;
-  page?: number;
-  limit?: number;
-}) => {
+export const getTitles = async ({ type, genre, page, limit = 24 }: GetTitlesParams) => {
   // todo
   const query = /* GraphQL */ `
     query Titles(
@@ -195,7 +186,11 @@ export const getTitles = async ({
     ...(genre && { genre }),
   };
   const response = await sendGraphQLReq(query, variables);
-  const { data } = (await response.json()) as Titles;
+  const { data, errors } = (await response.json()) as Titles & ErrorResponse;
+
+  if (errors) {
+    throw new Error(errors[0].message);
+  }
 
   data.titles.nodes = data.titles.nodes.map(({ tmdbBackdrop, ...rest }: BasicTitle) => ({
     tmdbBackdrop: tmdbBackdrop

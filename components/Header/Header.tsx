@@ -1,6 +1,11 @@
+'use client';
+
 import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import { cn } from '@/lib/utils';
 
 import DarkModeToggle from '../DarkModeToggle';
 
@@ -11,11 +16,11 @@ const LINKS = [
   },
   {
     label: 'TV Shows',
-    href: '/tv-show',
+    href: '/browse/show',
   },
   {
     label: 'Movies',
-    href: '/movie',
+    href: '/browse/movie',
   },
   {
     label: 'Popular',
@@ -28,6 +33,8 @@ const LINKS = [
 ];
 
 const Header = () => {
+  const pathName = usePathname();
+
   return (
     <header className='sticky top-0 z-10 w-full border-b bg-background/95 px-5 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-10'>
       <div className='flex h-14 items-center'>
@@ -44,7 +51,12 @@ const Header = () => {
           <nav className='hidden items-center space-x-6 text-sm font-medium md:flex'>
             {LINKS.map((link) => (
               <Link
-                className='text-foreground/60 transition-colors hover:text-foreground/80'
+                className={cn(
+                  'text-foreground/60 transition-colors hover:text-foreground/80',
+                  {
+                    'text-foreground': link.href === pathName,
+                  },
+                )}
                 href={link.href}
                 key={link.href}
               >
