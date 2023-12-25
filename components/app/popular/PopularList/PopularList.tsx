@@ -12,13 +12,13 @@ import {
 } from '@/components/ui/select';
 import { BasicTitle } from '@/types/Title';
 
-interface PopularListProps {
+type PopularListProps = {
   data: {
     day: BasicTitle[];
     week: BasicTitle[];
     month: BasicTitle[];
   };
-}
+};
 
 const PopularList: React.FC<PopularListProps> = ({ data }) => {
   const [titles, setTitles] = React.useState(() => data.day);

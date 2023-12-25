@@ -1,4 +1,4 @@
-export interface Genres {
+export type Genres = {
   data: {
     genres: [
       {
@@ -7,6 +7,6 @@ export interface Genres {
       },
     ];
   };
-}
+};
 
 export type GenresItem = Genres['data']['genres'];

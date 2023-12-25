@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { motion, Variants } from 'framer-motion';
 
-interface SpinUpProps {
+type SpinUpProps = {
   children: React.ReactNode;
-}
+};
 
 const variants: Variants = {
   offscreen: {

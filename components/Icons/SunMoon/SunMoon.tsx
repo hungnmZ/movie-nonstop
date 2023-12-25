@@ -7,9 +7,9 @@ const SPRING = {
   type: 'spring',
 };
 
-interface SunMoonProps {
+type SunMoonProps = {
   theme: 'light' | 'dark';
-}
+};
 
 const SunMoon: React.FC<SunMoonProps> = ({ theme }) => {
   const svgVariants = {

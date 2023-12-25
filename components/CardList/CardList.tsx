@@ -7,9 +7,9 @@ import { BasicTitle } from '@/types/Title';
 
 import MovieCard from '../MovieCard';
 
-interface CardListProps {
+type CardListProps = {
   data: BasicTitle[];
-}
+};
 
 const CardList: React.FC<CardListProps> = ({ data }) => {
   const [responsiveSize] = useResponsiveSize();

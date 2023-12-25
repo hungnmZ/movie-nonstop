@@ -4,13 +4,13 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { range } from '@/utils';
 
-interface CardSliderNavigatorProps {
+type CardSliderNavigatorProps = {
   children: React.ReactNode;
   slideIndex: number;
   setSlideIndex: Function;
   maxSlideIndex: number;
   isHoverSlider: boolean;
-}
+};
 
 const CardSliderNavigator: React.FC<CardSliderNavigatorProps> = ({
   children,

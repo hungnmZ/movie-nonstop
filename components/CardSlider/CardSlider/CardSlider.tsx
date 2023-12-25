@@ -16,10 +16,10 @@ const SPRING = {
   damping: 30,
 };
 
-interface CardSliderProps {
+type CardSliderProps = {
   header: string;
   titles: BasicTitle[];
-}
+};
 
 const CardSlider: React.FC<CardSliderProps> = ({ header, titles }) => {
   const [isHoverSlider, setIsHoverSlider] = React.useState(false);

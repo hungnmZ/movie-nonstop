@@ -1,6 +1,6 @@
 import { BasicTitle } from './Title';
 
-export interface TopTitles {
+export type TopTitles = {
   data: {
     topTitles: [
       {
@@ -11,7 +11,7 @@ export interface TopTitles {
       },
     ];
   };
-}
+};
 
 type BasicTitleWithParent = BasicTitle & {
   parent: BasicTitleWithParent;

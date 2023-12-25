@@ -11,13 +11,13 @@ import { BasicTitle } from '@/types/Title';
 import { TitlesItem } from '@/types/Titles';
 import { fetcher } from '@/utils';
 
-interface TitlesListProps {
+type TitlesListProps = {
   titles: TitlesItem;
   query: {
     type: string;
     genre?: string;
   };
-}
+};
 
 const fetcherData = async (url: string) => (await fetcher(url)) as TitlesItem;
 

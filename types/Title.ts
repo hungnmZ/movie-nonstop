@@ -1,4 +1,4 @@
-export interface BasicTitle {
+export type BasicTitle = {
   id: string;
   nameEn: string;
   type: string;
@@ -15,4 +15,4 @@ export interface BasicTitle {
   movieInfo: {
     duration: number;
   };
-}
+};

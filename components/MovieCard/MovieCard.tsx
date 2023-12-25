@@ -18,11 +18,11 @@ const SPRING: Transition = {
   duration: 0.5,
 };
 
-interface MovieCardProps {
+type MovieCardProps = {
   isFirst?: boolean;
   isLast?: boolean;
   data: BasicTitle;
-}
+};
 
 const MovieCard: React.FC<MovieCardProps> = ({
   isFirst = false,

@@ -12,9 +12,9 @@ import {
 } from '@/components/ui/select';
 import { GenresItem } from '@/types/Genres';
 
-interface GenreSelectionProps {
+type GenreSelectionProps = {
   genres: GenresItem;
-}
+};
 
 const GenreSelection: React.FC<GenreSelectionProps> = ({ genres }) => {
   const searchParams = useSearchParams();

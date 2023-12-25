@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-interface CardSliderChildProps {
+type CardSliderChildProps = {
   children: React.ReactNode;
-}
+};
 
 const CardSliderChild: React.FC<CardSliderChildProps> = ({ children }) => {
   return (

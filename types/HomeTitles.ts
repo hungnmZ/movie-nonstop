@@ -1,9 +1,9 @@
 import { BasicTitle } from './Title';
 
-export interface HomeTitles {
+export type HomeTitles = {
   data: {
     [key: string]: {
       nodes: BasicTitle[];
     };
   };
-}
+};

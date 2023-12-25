@@ -7,14 +7,14 @@ import { getTitles } from '@/data/title';
 
 export const revalidate = 600;
 
-interface PageProps {
+type PageProps = {
   searchParams: {
     genre?: string;
   };
   params: {
     type: string;
   };
-}
+};
 
 export const getHeader = (type: string) => {
   switch (type) {
