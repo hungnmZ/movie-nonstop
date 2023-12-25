@@ -16,7 +16,7 @@ type PageProps = {
   };
 };
 
-export const getHeader = (type: string) => {
+const getHeader = (type: string) => {
   switch (type) {
     case 'movie':
       return 'Movies';
