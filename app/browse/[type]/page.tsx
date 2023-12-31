@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import MoviesList from '@/components/app/browse/TitlesList';
+import TitlesList from '@/components/app/browse/TitlesList';
 import GenreSelection from '@/components/GenreSelection';
 import { getGenres } from '@/data/genre';
 import { getTitles } from '@/data/title';
@@ -43,7 +43,7 @@ const Page = async ({ searchParams, params }: PageProps) => {
           <GenreSelection genres={genres} />
         </div>
       </div>
-      <MoviesList titles={titles} query={query} key={query.genre} />
+      <TitlesList titles={titles} query={query} key={query.genre} />
     </main>
   );
 };
