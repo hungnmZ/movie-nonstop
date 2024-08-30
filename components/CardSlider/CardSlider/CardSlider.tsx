@@ -44,7 +44,7 @@ const CardSlider: React.FC<CardSliderProps> = ({ header, titles }) => {
 
   return (
     <div
-      className='sliderWrapper overflow-hidden whitespace-nowrap p-5 md:p-10'
+      className='sliderWrapper overflow-hidden whitespace-nowrap p-5 md:p-12'
       onMouseEnter={() => setIsHoverSlider(true)}
       onMouseLeave={() => setIsHoverSlider(false)}
     >
