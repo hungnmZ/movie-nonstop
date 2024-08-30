@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 
 import Header from '@/components/Header';
-import ThemeProvider from '@/components/ThemeProvider';
+import ThemeProvider from '@/components/providers/ThemeProvider';
 import { cn } from '@/lib/utils';
 
 import './globals.css';
@@ -26,12 +26,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           fontSans.variable,
         )}
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
           <Header />
           {children}
         </ThemeProvider>

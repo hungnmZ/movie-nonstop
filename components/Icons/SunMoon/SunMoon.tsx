@@ -2,19 +2,25 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 const SPRING = {
   type: 'spring',
 };
 
-type SunMoonProps = {
-  theme: 'light' | 'dark';
-};
+const SunMoon: React.FC = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
 
-const SunMoon: React.FC<SunMoonProps> = ({ theme }) => {
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <div className='h-5 w-5' />;
+
   const svgVariants = {
-    dark: { rotate: 40 },
-    light: { rotate: 90 },
+    dark: { rotate: 40, opacity: 1 },
+    light: { rotate: 90, opacity: 1 },
   };
 
   const sunMoonVariants = {
@@ -43,17 +49,18 @@ const SunMoon: React.FC<SunMoonProps> = ({ theme }) => {
 
   return (
     <motion.svg
-      className='overflow-visible'
+      className='h-5 w-5 overflow-visible'
       width='20'
       height='20'
       viewBox='0 0 18 18'
       variants={svgVariants}
-      animate={theme}
+      animate={resolvedTheme}
       transition={SPRING}
+      initial={{ opacity: 0 }}
     >
       <mask id='moon-mask-main-nav'>
         <rect x='0' y='0' width='18' height='18' fill='#FFF'></rect>
-        <motion.circle variants={maskVariants} r='8' fill='black' transition={SPRING} />
+        <motion.circle variants={maskVariants} r='8' fill='black' />
       </mask>
       <motion.circle
         cx='9'
@@ -62,7 +69,6 @@ const SunMoon: React.FC<SunMoonProps> = ({ theme }) => {
         fill='currentColor'
         mask='url(#moon-mask-main-nav)'
         variants={sunMoonVariants}
-        transition={SPRING}
       />
       <g>
         {criclePositions.map((position, index) => (
