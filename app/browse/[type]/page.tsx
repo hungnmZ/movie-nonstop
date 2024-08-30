@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
-import TitlesList from '@/components/app/browse/TitlesList';
-import GenreSelection from '@/components/GenreSelection';
+import TitlesList from '@/app/browse/_components/TitlesList';
+import GenreSelection from '@/components/common/GenreSelection';
 import { getGenres } from '@/data/genre';
 import { getTitles } from '@/data/title';
 

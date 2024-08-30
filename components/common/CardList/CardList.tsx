@@ -2,10 +2,9 @@
 
 import * as React from 'react';
 
+import MovieCard from '@/components/common/MovieCard';
 import { useResponsiveSize } from '@/hooks/useResponsiveSize';
 import { BasicTitle } from '@/types/Title';
-
-import MovieCard from '../MovieCard';
 
 type CardListProps = {
   data: BasicTitle[];

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { motion } from 'framer-motion';
 
-import MovieCard from '@/components/MovieCard';
+import MovieCard from '@/components/common/MovieCard';
 import { useResponsiveSize } from '@/hooks/useResponsiveSize';
 import { BasicTitle } from '@/types/Title';
 

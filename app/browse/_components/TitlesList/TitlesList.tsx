@@ -4,8 +4,8 @@ import * as React from 'react';
 import { useInView } from 'framer-motion';
 import useSWRInfinite from 'swr/infinite';
 
-import CardList from '@/components/CardList';
-import LoadingIndicator from '@/components/LoadingIndicator';
+import CardList from '@/components/common/CardList';
+import LoadingIndicator from '@/components/common/LoadingIndicator';
 import { useToast } from '@/components/ui/use-toast';
 import { BasicTitle } from '@/types/Title';
 import { TitlesItem } from '@/types/Titles';

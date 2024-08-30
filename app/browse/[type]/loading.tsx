@@ -1,4 +1,4 @@
-import MovieCardSkeleton from '@/components/MovieCardSkeleton';
+import MovieCardSkeleton from '@/components/common/MovieCardSkeleton';
 import { Skeleton } from '@/components/ui/skeleton';
 import { range } from '@/utils';
 

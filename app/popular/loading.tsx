@@ -1,4 +1,4 @@
-import MovieCardSkeleton from '@/components/MovieCardSkeleton';
+import MovieCardSkeleton from '@/components/common/MovieCardSkeleton';
 import { Select, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { range } from '@/utils';
 

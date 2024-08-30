@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useTheme } from 'next-themes';
 
-import SunMoon from '../Icons/SunMoon';
+import SunMoon from '@/components/common/Icons/SunMoon';
 
 const DarkModeToggle = () => {
   const { resolvedTheme, setTheme } = useTheme();

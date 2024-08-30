@@ -1,4 +1,4 @@
-import MovieCardSkeleton from '@/components/MovieCardSkeleton';
+import MovieCardSkeleton from '@/components/common/MovieCardSkeleton';
 import { range } from '@/utils';
 
 export default function Loading() {

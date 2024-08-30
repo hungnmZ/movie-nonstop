@@ -1,8 +1,7 @@
 import * as React from 'react';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import { range } from '@/utils';
-
-import { Skeleton } from '../ui/skeleton';
 
 const LoadingIndicator: React.ForwardRefRenderFunction<HTMLDivElement> = (_, ref) => {
   return (

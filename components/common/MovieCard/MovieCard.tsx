@@ -5,11 +5,10 @@ import dayjs from 'dayjs';
 import { motion, Transition } from 'framer-motion';
 import Image from 'next/image';
 
+import PlayCircle from '@/components/common/Icons/PlayCircle';
 import { BasicTitle } from '@/types/Title';
 import { debounce } from '@/utils';
 import { displayTitleTime } from '@/utils/time';
-
-import PlayCircle from '../Icons/PlayCircle';
 
 const SPRING: Transition = {
   type: 'spring',

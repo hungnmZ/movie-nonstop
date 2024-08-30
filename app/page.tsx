@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import CardSlider from '@/components/CardSlider/CardSlider';
+import CardSlider from '@/components/common/CardSlider/CardSlider';
 import { getHomeTitles } from '@/data/title';
 
 export const revalidate = 600;

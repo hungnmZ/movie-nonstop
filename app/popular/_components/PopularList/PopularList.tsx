@@ -2,8 +2,8 @@
 import * as React from 'react';
 import { useSearchParams } from 'next/navigation';
 
-import CardList from '@/components/CardList';
-import TimeUnitSelection from '@/components/TimeUnitSelection';
+import CardList from '@/components/common/CardList';
+import TimeUnitSelection from '@/components/common/TimeUnitSelection';
 import { BasicTitle } from '@/types/Title';
 
 type PopularListProps = {
