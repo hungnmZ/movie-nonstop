@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import TitlesList from '@/app/browse/_components/TitlesList';
 import GenreSelection from '@/components/common/GenreSelection';
 import { getGenres } from '@/data/genre';
 import { getTitles } from '@/data/title';
+
+import TitlesList from '../_components/TitlesList';
 
 export const revalidate = 600;
 

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -11,7 +12,7 @@ import { cn } from '@/lib/utils';
 const LINKS = [
   {
     label: 'Home',
-    href: '/',
+    href: '/home',
   },
   {
     label: 'TV Shows',
@@ -38,7 +39,7 @@ const Header = () => {
     <header className='sticky top-0 z-10 w-full border-b bg-background/95 px-5 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-10'>
       <div className='flex h-14 items-center'>
         <div className='mr-4 flex'>
-          <Link href='/'>
+          <Link href='/home'>
             <Image
               className='mr-6 h-8 w-auto cursor-pointer'
               src='/images/logo-full.png'
@@ -64,8 +65,9 @@ const Header = () => {
             ))}
           </nav>
         </div>
-        <div className='flex flex-1 justify-end'>
+        <div className='flex flex-1 justify-end gap-5'>
           <DarkModeToggle />
+          <UserButton />
         </div>
       </div>
     </header>

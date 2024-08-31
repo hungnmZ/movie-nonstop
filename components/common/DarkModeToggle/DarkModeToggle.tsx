@@ -8,14 +8,6 @@ import SunMoon from '@/components/common/Icons/SunMoon';
 const DarkModeToggle = () => {
   const { resolvedTheme, setTheme } = useTheme();
 
-  React.useEffect(() => {
-    const handleChange = () => setTheme('system');
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', handleChange);
-
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [setTheme]);
-
   const handleToggleTheme = () => {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };

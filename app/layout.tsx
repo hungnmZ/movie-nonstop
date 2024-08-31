@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 
-import Header from '@/components/common/Header';
+import AuthProvider from '@/components/providers/AuthProvider';
 import ThemeProvider from '@/components/providers/ThemeProvider';
 import { cn } from '@/lib/utils';
 
@@ -19,19 +19,18 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang='en' suppressHydrationWarning>
-      <body
-        className={cn(
-          'min-h-screen bg-background font-sans antialiased',
-          fontSans.variable,
-        )}
-      >
-        <ThemeProvider>
-          <Header />
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang='en' suppressHydrationWarning>
+        <body
+          className={cn(
+            'min-h-screen bg-background font-sans antialiased',
+            fontSans.variable,
+          )}
+        >
+          <ThemeProvider>{children}</ThemeProvider>
+        </body>
+      </html>
+    </AuthProvider>
   );
 };
 

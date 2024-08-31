@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import PopularList from '@/app/popular/_components/PopularList';
 import { getTopTitles } from '@/data/title';
+
+import PopularList from './_components/PopularList';
 
 export const revalidate = 600;
 
