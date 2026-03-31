@@ -25,10 +25,6 @@ const LINKS = [
     label: 'Popular',
     href: '/popular',
   },
-  {
-    label: 'My List',
-    href: '/my-list',
-  },
 ];
 
 const Header = () => {
