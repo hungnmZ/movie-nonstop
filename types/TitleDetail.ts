@@ -9,10 +9,12 @@ export type TitleDetailPerson = {
 };
 
 export type TitleDetailEpisode = {
+  id: string | null;
   name: string;
   tmdbPoster: string;
   airDate: string | null;
   number: number;
+  watchable: boolean;
 };
 
 export type TitleDetailSeason = {

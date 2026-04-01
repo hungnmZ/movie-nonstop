@@ -46,17 +46,14 @@ const LocaleProvider: React.FC<LocaleProviderProps> = ({ initialLocale, children
     (nextLocale: Locale) => {
       const resolvedLocale = resolveLocale(nextLocale);
 
-      setLocaleState((currentLocale) => {
-        if (currentLocale === resolvedLocale) return currentLocale;
+      if (locale === resolvedLocale) return;
 
-        persistLocale(resolvedLocale);
-        document.documentElement.lang = resolvedLocale;
-        router.refresh();
-
-        return resolvedLocale;
-      });
+      persistLocale(resolvedLocale);
+      document.documentElement.lang = resolvedLocale;
+      setLocaleState(resolvedLocale);
+      router.refresh();
     },
-    [router],
+    [locale, router],
   );
 
   const toggleLocale = React.useCallback(() => {

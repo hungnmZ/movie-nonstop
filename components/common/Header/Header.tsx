@@ -14,6 +14,10 @@ const Header = () => {
   const pathName = usePathname();
   const { t } = useLocale();
 
+  if (pathName.startsWith('/watch/')) {
+    return null;
+  }
+
   const links = [
     {
       label: t('nav.home'),

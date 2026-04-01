@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { PlayCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -91,12 +92,24 @@ const Page = async ({ params }: PageProps) => {
             </div>
 
             <div className='space-y-4'>
-              <Link
-                href={`/browse/${params.type}`}
-                className='inline-block rounded-full border border-white/30 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:border-white hover:bg-white/10'
-              >
-                {t('detail.backToList')}
-              </Link>
+              <div className='flex flex-wrap items-center gap-3'>
+                <Link
+                  href={`/browse/${params.type}`}
+                  className='inline-block rounded-full border border-white/30 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:border-white hover:bg-white/10'
+                >
+                  {t('detail.backToList')}
+                </Link>
+
+                {detail.type === 'movie' ? (
+                  <Link
+                    href={`/watch/movie/${detail.id}`}
+                    className='inline-flex items-center gap-2 rounded-full border border-red-400/60 bg-red-500/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-red-100 transition-colors hover:border-red-300 hover:bg-red-500/30'
+                  >
+                    <PlayCircle className='h-4 w-4' />
+                    {t('detail.playMovie')}
+                  </Link>
+                ) : null}
+              </div>
 
               <h1 className='text-4xl font-black tracking-tight text-white md:text-5xl lg:text-6xl'>
                 {screenTitle}
@@ -237,44 +250,69 @@ const Page = async ({ params }: PageProps) => {
                     </div>
 
                     <div className='grid gap-3 md:grid-cols-2'>
-                      {season.episodes.map((episode) => (
-                        <div
-                          key={`${season.id}-${episode.number}`}
-                          className='flex gap-3 rounded-lg border border-border/50 bg-background/70 p-3'
-                        >
-                          <div className='relative aspect-video w-28 shrink-0 overflow-hidden rounded bg-muted'>
-                            {episode.tmdbPoster ? (
-                              <Image
-                                src={episode.tmdbPoster}
-                                alt={episode.name}
-                                fill
-                                sizes='112px'
-                                className='object-cover'
-                              />
-                            ) : null}
-                          </div>
-                          <div>
-                            <p className='text-sm font-semibold'>
-                              {t('detail.episodeLabel', { number: episode.number })}
-                            </p>
-                            <p className='line-clamp-2 text-sm'>
-                              {episode.name ||
-                                t('detail.episodeNameFallback', {
-                                  number: episode.number,
-                                })}
-                            </p>
-                            <p className='mt-1 text-xs text-muted-foreground'>
-                              {episode.airDate
-                                ? displayReleaseDate(
-                                    episode.airDate,
-                                    locale,
-                                    t('common.fallback.updating'),
-                                  )
-                                : t('common.fallback.updating')}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
+                      {season.episodes.map((episode) => {
+                        const episodeTitle =
+                          episode.name ||
+                          t('detail.episodeNameFallback', {
+                            number: episode.number,
+                          });
+                        const episodeContent = (
+                          <>
+                            <div className='relative aspect-video w-28 shrink-0 overflow-hidden rounded bg-muted'>
+                              {episode.tmdbPoster ? (
+                                <Image
+                                  src={episode.tmdbPoster}
+                                  alt={episodeTitle}
+                                  fill
+                                  sizes='112px'
+                                  className='object-cover'
+                                />
+                              ) : null}
+                            </div>
+                            <div>
+                              <p className='text-sm font-semibold'>
+                                {t('detail.episodeLabel', { number: episode.number })}
+                              </p>
+                              <p className='line-clamp-2 text-sm'>{episodeTitle}</p>
+                              <p className='mt-1 text-xs text-muted-foreground'>
+                                {episode.airDate
+                                  ? displayReleaseDate(
+                                      episode.airDate,
+                                      locale,
+                                      t('common.fallback.updating'),
+                                    )
+                                  : t('common.fallback.updating')}
+                              </p>
+                              <p className='mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-red-300'>
+                                {episode.id && episode.watchable
+                                  ? t('detail.playEpisode')
+                                  : t('detail.episodeUnavailable')}
+                              </p>
+                            </div>
+                          </>
+                        );
+
+                        if (!episode.id || !episode.watchable) {
+                          return (
+                            <div
+                              key={`${season.id}-${episode.number}`}
+                              className='flex gap-3 rounded-lg border border-border/50 bg-background/55 p-3 text-muted-foreground'
+                            >
+                              {episodeContent}
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <Link
+                            key={`${season.id}-${episode.number}`}
+                            href={`/watch/show/${detail.id}?season=${season.number}&episode=${episode.number}`}
+                            className='flex gap-3 rounded-lg border border-border/50 bg-background/70 p-3 transition-colors hover:border-red-400/60 hover:bg-red-500/10'
+                          >
+                            {episodeContent}
+                          </Link>
+                        );
+                      })}
                     </div>
                   </article>
                 ))}

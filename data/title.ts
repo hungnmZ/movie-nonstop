@@ -11,6 +11,7 @@ import {
   TitleDetailSeason,
 } from '@/types/TitleDetail';
 import { GetTitlesParams, Titles } from '@/types/Titles';
+import { TitleWatch } from '@/types/TitleWatch';
 import { TopTitles } from '@/types/TopTitles';
 import { getTmdbBackdropUrl, getTmdbPosterUrl } from '@/utils/image';
 
@@ -105,6 +106,19 @@ const TITLE_SEASON_DETAIL_QUERY = /* GraphQL */ `
   }
 `;
 
+const TITLE_EPISODES_QUERY = /* GraphQL */ `
+  query EpisodeTitles($parentId: String) {
+    titles(first: 500, sort: "number", order: "asc", parentId: $parentId) {
+      nodes {
+        id
+        type
+        number
+        watchable
+      }
+    }
+  }
+`;
+
 type TitleDetailQuery = {
   data: {
     title: {
@@ -189,6 +203,30 @@ type TitleSeasonEpisodesQuery = {
   };
 };
 
+type TitleEpisodesQuery = {
+  data: {
+    titles: {
+      nodes: Array<{
+        id: string;
+        type: string;
+        number: string | null;
+        watchable: boolean;
+      }>;
+    };
+  };
+};
+
+type TitleWatchQuery = {
+  data: {
+    title: {
+      id: string;
+      srcUrl: string | null;
+      srcServer: string | null;
+      watchable: boolean;
+    } | null;
+  };
+};
+
 const normalizeTmdbPoster = (path: string | null | undefined) =>
   path ? getTmdbPosterUrl(path) : '';
 
@@ -242,34 +280,98 @@ const getShowSeasons = async (showId: string) => {
 
   const seasonDetails = await Promise.all(
     seasons.map(async (season) => {
-      const seasonRes = await sendGraphQLReq(TITLE_SEASON_DETAIL_QUERY, {
-        parentId: showId,
-        number: season.number,
-      });
-      const { data: seasonData, errors: seasonErrors } =
-        (await seasonRes.json()) as TitleSeasonEpisodesQuery & ErrorResponse;
+      try {
+        const [seasonRes, episodeRes] = await Promise.all([
+          sendGraphQLReq(TITLE_SEASON_DETAIL_QUERY, {
+            parentId: showId,
+            number: season.number,
+          }),
+          sendGraphQLReq(TITLE_EPISODES_QUERY, {
+            parentId: season.id,
+          }),
+        ]);
+        const { data: seasonData, errors: seasonErrors } =
+          (await seasonRes.json()) as TitleSeasonEpisodesQuery & ErrorResponse;
+        const { data: episodeData, errors: episodeErrors } =
+          (await episodeRes.json()) as TitleEpisodesQuery & ErrorResponse;
 
-      if (seasonErrors) {
-        throw new Error(seasonErrors[0].message);
+        if (seasonErrors) {
+          throw new Error(seasonErrors[0].message);
+        }
+
+        if (episodeErrors) {
+          throw new Error(episodeErrors[0].message);
+        }
+
+        const seasonDetail = seasonData.title;
+        const episodeTitleByNumber = new Map<
+          number,
+          {
+            id: string;
+            watchable: boolean;
+          }
+        >();
+
+        for (const episodeTitle of episodeData.titles.nodes) {
+          if (episodeTitle.type !== 'episode' || !episodeTitle.number) continue;
+
+          const episodeNumber = Number(episodeTitle.number);
+
+          if (!Number.isFinite(episodeNumber)) continue;
+
+          episodeTitleByNumber.set(episodeNumber, {
+            id: episodeTitle.id,
+            watchable: episodeTitle.watchable,
+          });
+        }
+
+        const inlineEpisodes = seasonDetail?.episodes || [];
+        const episodes = inlineEpisodes.length
+          ? inlineEpisodes.map((episode) => {
+              const matchedEpisode = episodeTitleByNumber.get(episode.number);
+
+              return {
+                id: matchedEpisode?.id || null,
+                name: episode.name || '',
+                tmdbPoster: normalizeTmdbPoster(episode.tmdbPoster),
+                airDate: episode.airDate,
+                number: episode.number,
+                watchable: matchedEpisode?.watchable ?? false,
+              };
+            })
+          : Array.from(episodeTitleByNumber.entries())
+              .sort((a, b) => a[0] - b[0])
+              .map(([number, episode]) => ({
+                id: episode.id,
+                name: '',
+                tmdbPoster: '',
+                airDate: null,
+                number,
+                watchable: episode.watchable,
+              }));
+
+        return {
+          id: season.id,
+          number: season.number || '-',
+          tmdbPoster: normalizeTmdbPoster(season.tmdbPoster),
+          publishDate: season.publishDate,
+          watchable: season.watchable,
+          childrenCount: season.childrenCount,
+          seasonFull: seasonDetail?.seasonFull ?? null,
+          episodes,
+        } as TitleDetailSeason;
+      } catch {
+        return {
+          id: season.id,
+          number: season.number || '-',
+          tmdbPoster: normalizeTmdbPoster(season.tmdbPoster),
+          publishDate: season.publishDate,
+          watchable: season.watchable,
+          childrenCount: season.childrenCount,
+          seasonFull: null,
+          episodes: [],
+        } as TitleDetailSeason;
       }
-
-      const seasonDetail = seasonData.title;
-
-      return {
-        id: season.id,
-        number: season.number || '-',
-        tmdbPoster: normalizeTmdbPoster(season.tmdbPoster),
-        publishDate: season.publishDate,
-        watchable: season.watchable,
-        childrenCount: season.childrenCount,
-        seasonFull: seasonDetail?.seasonFull ?? null,
-        episodes: (seasonDetail?.episodes || []).map((episode) => ({
-          name: episode.name || '',
-          tmdbPoster: normalizeTmdbPoster(episode.tmdbPoster),
-          airDate: episode.airDate,
-          number: episode.number,
-        })),
-      } as TitleDetailSeason;
     }),
   );
 
@@ -311,7 +413,8 @@ export const getTitleDetail = async (id: string) => {
     }),
   );
 
-  const seasons = data.title.type === 'show' ? await getShowSeasons(data.title.id) : [];
+  const seasons =
+    data.title.type === 'show' ? await getShowSeasons(data.title.id).catch(() => []) : [];
 
   return {
     id: data.title.id,
@@ -340,20 +443,33 @@ export const getTitleDetail = async (id: string) => {
   } as TitleDetail;
 };
 
-export const getTitleWatch = async (id: string) => {
+export const getTitleWatch = async (id: string, server?: string) => {
   const query = /* GraphQL */ `
     query TitleWatch($id: String!, $server: String) {
       title(id: $id, server: $server) {
         id
         srcUrl
+        srcServer
+        watchable
       }
     }
   `;
 
-  const response = await sendGraphQLReq(query, { id });
-  const { data } = await response.json();
+  const response = await sendGraphQLReq(query, {
+    id,
+    ...(server ? { server } : {}),
+  });
+  const { data, errors } = (await response.json()) as TitleWatchQuery & ErrorResponse;
 
-  return data;
+  if (errors) {
+    throw new Error(errors[0].message);
+  }
+
+  if (!data.title) {
+    throw new Error('Watch source not found');
+  }
+
+  return data.title as TitleWatch;
 };
 
 export const getTopTitles = async () => {
