@@ -1,16 +1,19 @@
 import MovieCardSkeleton from '@/components/common/MovieCardSkeleton';
 import { Select, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getServerI18n } from '@/i18n/server';
 import { range } from '@/utils';
 
 export default function Loading() {
+  const { t } = getServerI18n();
+
   return (
     <main>
       <div className='m-5 flex gap-2 md:m-10'>
-        <div className='col-span-1 text-3xl font-bold'>Popular by</div>
+        <div className='col-span-1 text-3xl font-bold'>{t('popular.header')}</div>
         <div className='min-w-[8rem]'>
           <Select>
             <SelectTrigger>
-              <SelectValue placeholder='Day' />
+              <SelectValue placeholder={t('time.day')} />
             </SelectTrigger>
           </Select>
         </div>

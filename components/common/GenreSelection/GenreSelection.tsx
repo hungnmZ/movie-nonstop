@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { useLocale } from '@/components/providers/LocaleProvider';
 import {
   Select,
   SelectContent,
@@ -10,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { localizeName } from '@/i18n/localize';
 import { GenresItem } from '@/types/Genres';
 
 type GenreSelectionProps = {
@@ -21,9 +23,10 @@ const GenreSelection: React.FC<GenreSelectionProps> = ({ genres }) => {
   const defaulValue = searchParams.get('genre') || 'ALL_GENRES';
   const pathname = usePathname();
   const { replace } = useRouter();
+  const { locale, t } = useLocale();
 
   const onGenreChange = (genre: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
 
     if (genre === 'ALL_GENRES') params.delete('genre');
     else params.set('genre', genre);
@@ -35,14 +38,17 @@ const GenreSelection: React.FC<GenreSelectionProps> = ({ genres }) => {
     <Select onValueChange={onGenreChange}>
       <SelectTrigger>
         <SelectValue
-          placeholder={genres.find((g) => g.slug === defaulValue)?.nameEn || 'All genres'}
+          placeholder={
+            localizeName(locale, genres.find((g) => g.slug === defaulValue) || {}, '') ||
+            t('genre.all')
+          }
         />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value='ALL_GENRES'>All genres</SelectItem>
+        <SelectItem value='ALL_GENRES'>{t('genre.all')}</SelectItem>
         {genres.map((genre) => (
           <SelectItem key={genre.slug} value={genre.slug}>
-            {genre.nameEn}
+            {localizeName(locale, genre, genre.nameEn)}
           </SelectItem>
         ))}
       </SelectContent>

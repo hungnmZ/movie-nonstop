@@ -6,6 +6,7 @@ import useSWRInfinite from 'swr/infinite';
 
 import CardList from '@/components/common/CardList';
 import LoadingIndicator from '@/components/common/LoadingIndicator';
+import { useLocale } from '@/components/providers/LocaleProvider';
 import { useToast } from '@/components/ui/use-toast';
 import { BasicTitle } from '@/types/Title';
 import { TitlesItem } from '@/types/Titles';
@@ -25,6 +26,7 @@ const TitlesList: React.FC<TitlesListProps> = ({ titles: initTitles, query }) =>
   const loadingRef = React.useRef(null);
   const isLoadingInView = useInView(loadingRef);
   const { toast } = useToast();
+  const { t } = useLocale();
 
   const getKey = (index: number) => {
     const params = new URLSearchParams();
@@ -44,8 +46,8 @@ const TitlesList: React.FC<TitlesListProps> = ({ titles: initTitles, query }) =>
 
   if (error) {
     toast({
-      title: 'Uh oh! Something went wrong.',
-      description: 'There was a problem with your request.',
+      title: t('browse.toastErrorTitle'),
+      description: t('browse.toastErrorDescription'),
     });
   }
 

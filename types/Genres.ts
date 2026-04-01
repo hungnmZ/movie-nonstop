@@ -1,11 +1,10 @@
 export type Genres = {
   data: {
-    genres: [
-      {
-        nameEn: string;
-        slug: string;
-      },
-    ];
+    genres: Array<{
+      nameEn: string;
+      nameVi: string | null;
+      slug: string;
+    }>;
   };
 };
 

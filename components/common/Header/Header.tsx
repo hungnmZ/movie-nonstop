@@ -6,29 +6,32 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import DarkModeToggle from '@/components/common/DarkModeToggle';
+import LanguageToggle from '@/components/common/LanguageToggle';
+import { useLocale } from '@/components/providers/LocaleProvider';
 import { cn } from '@/lib/utils';
-
-const LINKS = [
-  {
-    label: 'Home',
-    href: '/',
-  },
-  {
-    label: 'TV Shows',
-    href: '/browse/show',
-  },
-  {
-    label: 'Movies',
-    href: '/browse/movie',
-  },
-  {
-    label: 'Popular',
-    href: '/popular',
-  },
-];
 
 const Header = () => {
   const pathName = usePathname();
+  const { t } = useLocale();
+
+  const links = [
+    {
+      label: t('nav.home'),
+      href: '/',
+    },
+    {
+      label: t('nav.tvShows'),
+      href: '/browse/show',
+    },
+    {
+      label: t('nav.movies'),
+      href: '/browse/movie',
+    },
+    {
+      label: t('nav.popular'),
+      href: '/popular',
+    },
+  ];
 
   return (
     <header className='sticky top-0 z-10 w-full border-b bg-background/95 px-5 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-10'>
@@ -40,11 +43,11 @@ const Header = () => {
               src='/images/logo-full.png'
               width={264}
               height={85}
-              alt='logo'
+              alt={t('nav.logoAlt')}
             />
           </Link>
           <nav className='hidden items-center space-x-6 text-sm font-medium md:flex'>
-            {LINKS.map((link) => (
+            {links.map((link) => (
               <Link
                 className={cn(
                   'text-foreground/60 transition-colors hover:text-foreground/80',
@@ -60,7 +63,8 @@ const Header = () => {
             ))}
           </nav>
         </div>
-        <div className='flex flex-1 justify-end'>
+        <div className='flex flex-1 items-center justify-end gap-2'>
+          <LanguageToggle />
           <DarkModeToggle />
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 
 import CardList from '@/components/common/CardList';
 import TimeUnitSelection from '@/components/common/TimeUnitSelection';
+import { useLocale } from '@/components/providers/LocaleProvider';
 import { BasicTitle } from '@/types/Title';
 
 type PopularListProps = {
@@ -16,6 +17,7 @@ type PopularListProps = {
 
 const PopularList: React.FC<PopularListProps> = ({ data }) => {
   const searchParams = useSearchParams();
+  const { t } = useLocale();
   const timeUnit = searchParams.get('time-unit') || 'day';
   const titles =
     timeUnit === 'day' || timeUnit === 'week' || timeUnit === 'month'
@@ -25,7 +27,7 @@ const PopularList: React.FC<PopularListProps> = ({ data }) => {
   return (
     <main>
       <div className='m-5 flex gap-2 md:m-10'>
-        <div className='col-span-1 text-3xl font-bold'>Popular by</div>
+        <div className='col-span-1 text-3xl font-bold'>{t('popular.header')}</div>
         <div className='min-w-[8rem]'>
           <TimeUnitSelection />
         </div>

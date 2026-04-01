@@ -6,6 +6,7 @@ export const getGenres = async () => {
     query Genres {
       genres {
         nameEn
+        nameVi
         slug
       }
     }

@@ -4,9 +4,11 @@ import * as React from 'react';
 import { useTheme } from 'next-themes';
 
 import SunMoon from '@/components/common/Icons/SunMoon';
+import { useLocale } from '@/components/providers/LocaleProvider';
 
 const DarkModeToggle = () => {
   const { resolvedTheme, setTheme } = useTheme();
+  const { t } = useLocale();
 
   React.useEffect(() => {
     const handleChange = () => setTheme('system');
@@ -22,7 +24,9 @@ const DarkModeToggle = () => {
 
   return (
     <button
+      type='button'
       className='flex h-8 w-8 items-center justify-center opacity-80 hover:opacity-100'
+      aria-label={t('nav.toggleTheme')}
       onClick={handleToggleTheme}
     >
       <SunMoon />
