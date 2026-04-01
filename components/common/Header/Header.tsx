@@ -21,7 +21,7 @@ const Header = () => {
   const links = [
     {
       label: t('nav.home'),
-      href: '/',
+      href: '/home',
     },
     {
       label: t('nav.tvShows'),
@@ -41,7 +41,7 @@ const Header = () => {
     <header className='sticky top-0 z-10 w-full border-b bg-background/95 px-5 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-10'>
       <div className='flex h-14 items-center'>
         <div className='mr-4 flex'>
-          <Link href='/'>
+          <Link href='/home'>
             <Image
               className='mr-6 h-8 w-auto cursor-pointer'
               src='/images/logo-full.png'
@@ -56,7 +56,9 @@ const Header = () => {
                 className={cn(
                   'text-foreground/60 transition-colors hover:text-foreground/80',
                   {
-                    'text-foreground': link.href === pathName,
+                    'text-foreground':
+                      link.href === pathName ||
+                      (link.href === '/home' && pathName === '/'),
                   },
                 )}
                 href={link.href}
